@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tipos de Índices en Bases de Datos</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Light blue-gray for a soft background */
+            color: #334155; /* Darker text for readability */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Ensure body takes full viewport height */
+        }
+        .container {
+            max-width: 1200px;
+            flex-grow: 1; /* Allow container to grow and fill space */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Center content vertically within container */
+        }
+        .slide {
+            display: none; /* Hide all slides by default */
+        }
+        .slide.active {
+            display: flex; /* Show active slide */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%; /* Ensure slide takes full height of its parent */
+            padding: 2rem; /* Add padding to slide content */
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 1.25rem; /* More rounded corners */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease-in-out;
+            width: 100%; /* Make card fill available width */
+            max-width: 900px; /* Limit max width of card */
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .code-block {
+            background-color: #1e293b; /* Darker background for code */
+            color: #e2e8f0; /* Light text for code */
+            border-radius: 0.75rem;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+        .navigation-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            margin-bottom: 2rem; /* Add margin to bottom of buttons */
+        }
+        .nav-button {
+            background-color: #4f46e5; /* Indigo */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+        }
+        .nav-button:hover {
+            background-color: #4338ca; /* Darker indigo */
+            transform: translateY(-2px);
+        }
+        .nav-button:disabled {
+            background-color: #a5b4fc; /* Lighter indigo for disabled state */
+            cursor: not-allowed;
+            transform: none;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+    <div class="container mx-auto py-8">
+
+        <!-- Slide 1: Title Slide -->
+        <section class="slide active" id="slide-1">
+            <header class="text-center mb-12 card p-8">
+                <h1 class="text-5xl sm:text-6xl font-extrabold text-indigo-700 mb-4">
+                    📚 Tipos de Índices en Bases de Datos
+                </h1>
+                <p class="text-xl sm:text-2xl text-slate-600">
+                    Una guía esencial para optimizar el rendimiento de tus consultas.
+                </p>
+            </header>
+        </section>
+
+        <!-- Slide 2: What is an Index Section -->
+        <section class="slide" id="slide-2">
+            <div class="card p-8 sm:p-10 flex flex-col md:flex-row items-center justify-center gap-8">
+                <div class="text-center md:text-left flex-grow">
+                    <h2 class="text-4xl font-bold text-slate-800 mb-4">🧠 ¿Qué es un índice?</h2>
+                    <p class="text-lg leading-relaxed text-slate-700">
+                        Un índice es como una guía rápida o un directorio organizado para encontrar información específica
+                        en una base de datos sin necesidad de revisar cada registro. Imagina que es la forma más eficiente
+                        de llegar a los datos que necesitas.
+                    </p>
+                    <div class="mt-6">
+                        <h3 class="text-2xl font-semibold text-slate-700 mb-3">Ejemplos cotidianos:</h3>
+                        <ul class="list-none p-0 text-lg text-slate-600 space-y-2">
+                            <li class="flex items-center"><span class="text-indigo-500 mr-3">📖</span> Índice de un libro</li>
+                            <li class="flex items-center"><span class="text-indigo-500 mr-3">📞</span> Lista de contactos</li>
+                            <li class="flex items-center"><span class="text-indigo-500 mr-3">🛒</span> Supermercado organizado</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 mt-8 md:mt-0">
+                    <img src="https://placehold.co/300x300/6366f1/ffffff?text=Index+Concept" alt="Concepto de Índice" class="rounded-full shadow-lg max-w-full h-auto">
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: Simple & Composite Index Cards -->
+        <section class="slide" id="slide-3">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full max-w-4xl">
+                <!-- Simple Index Card -->
+                <div class="card p-6 flex flex-col items-start">
+                    <h3 class="text-3xl font-bold text-slate-800 mb-3">✅ Índice Simple</h3>
+                    <p class="text-md leading-relaxed text-slate-700 mb-4">
+                        Crea un índice sobre una **sola columna**.
+                    </p>
+                    <div class="code-block w-full mb-4">
+                        <pre><code>CREATE INDEX idx_nombre ON clientes(nombre);</code></pre>
+                    </div>
+                    <p class="text-md leading-relaxed text-slate-600">
+                        Útil para búsquedas frecuentes por un solo campo.
+                    </p>
+                </div>
+
+                <!-- Composite Index Card -->
+                <div class="card p-6 flex flex-col items-start">
+                    <h3 class="text-3xl font-bold text-slate-800 mb-3">🧱 Índice Compuesto</h3>
+                    <p class="text-md leading-relaxed text-slate-700 mb-4">
+                        Cubre **dos o más columnas**.
+                    </p>
+                    <div class="code-block w-full mb-4">
+                        <pre><code>CREATE INDEX idx_nombre_ciudad ON clientes(nombre, ciudad);</code></pre>
+                    </div>
+                    <p class="text-md leading-relaxed text-slate-600">
+                        Úsalo cuando filtras por más de un campo a la vez.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: Unique & Partial Index Cards -->
+        <section class="slide" id="slide-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full max-w-4xl">
+                <!-- Unique Index Card -->
+                <div class="card p-6 flex flex-col items-start">
+                    <h3 class="text-3xl font-bold text-slate-800 mb-3">🧮 Índice Único</h3>
+                    <p class="text-md leading-relaxed text-slate-700 mb-4">
+                        Asegura que los valores de la columna **no se repitan**.
+                    </p>
+                    <div class="code-block w-full mb-4">
+                        <pre><code>CREATE UNIQUE INDEX idx_email ON usuarios(email);</code></pre>
+                    </div>
+                    <p class="text-md leading-relaxed text-slate-600">
+                        Ideal para correos electrónicos, IDs o cédulas.
+                    </p>
+                </div>
+
+                <!-- Partial Index Card -->
+                <div class="card p-6 flex flex-col items-start">
+                    <h3 class="text-3xl font-bold text-slate-800 mb-3">✂️ Índice Parcial</h3>
+                    <p class="text-md leading-relaxed text-slate-700 mb-4">
+                        Indexa solo los datos que cumplen una **condición específica**.
+                    </p>
+                    <div class="code-block w-full mb-4">
+                        <pre><code>CREATE INDEX idx_activos ON productos(precio) WHERE estado = 'activo';</code></pre>
+                    </div>
+                    <p class="text-md leading-relaxed text-slate-600">
+                        Ahorra espacio y mejora las consultas específicas.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: Functional & Other Indexes Cards -->
+        <section class="slide" id="slide-5">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full max-w-4xl">
+                <!-- Functional Index Card -->
+                <div class="card p-6 flex flex-col items-start">
+                    <h3 class="text-3xl font-bold text-slate-800 mb-3">⚙️ Índice Funcional</h3>
+                    <p class="text-md leading-relaxed text-slate-700 mb-4">
+                        Indexa el resultado de una **expresión o función**.
+                    </p>
+                    <div class="code-block w-full mb-4">
+                        <pre><code>CREATE INDEX idx_lower_nombre ON clientes(LOWER(nombre));</code></pre>
+                    </div>
+                    <p class="text-md leading-relaxed text-slate-600">
+                        Útil para búsquedas con funciones como `LOWER()`, `UPPER()`, `DATE()`.
+                    </p>
+                </div>
+
+                <!-- Other Indexes Card -->
+                <div class="card p-6 flex flex-col items-start">
+                    <h3 class="text-3xl font-bold text-slate-800 mb-3">🔍 Otros índices</h3>
+                    <ul class="list-none p-0 text-md leading-relaxed text-slate-700 space-y-3 w-full">
+                        <li>
+                            <strong class="text-indigo-600">Full Text:</strong> Para buscar palabras en textos largos.
+                            <div class="code-block w-full mt-2">
+                                <pre><code>GIN(to_tsvector('spanish', descripcion))</code></pre>
+                            </div>
+                        </li>
+                        <li>
+                            <strong class="text-indigo-600">Espaciales (GIS):</strong> Para coordenadas, mapas y ubicaciones. Requiere extensiones como PostGIS.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: Quick Comparison Section -->
+        <section class="slide" id="slide-6">
+            <div class="card p-8 sm:p-10 text-center w-full max-w-5xl">
+                <h2 class="text-4xl font-bold text-slate-800 mb-6">📊 Comparación Rápida</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 text-lg">
+                    <div class="p-4 bg-indigo-50 rounded-xl flex items-center justify-center text-center">
+                        <span class="font-semibold text-indigo-700">Simple:</span> 1 columna, búsqueda básica.
+                    </div>
+                    <div class="p-4 bg-indigo-50 rounded-xl flex items-center justify-center text-center">
+                        <span class="font-semibold text-indigo-700">Compuesto:</span> Varios campos, filtros combinados.
+                    </div>
+                    <div class="p-4 bg-indigo-50 rounded-xl flex items-center justify-center text-center">
+                        <span class="font-semibold text-indigo-700">Único:</span> Asegura unicidad.
+                    </div>
+                    <div class="p-4 bg-indigo-50 rounded-xl flex items-center justify-center text-center">
+                        <span class="font-semibold text-indigo-700">Parcial:</span> Solo algunos registros.
+                    </div>
+                    <div class="p-4 bg-indigo-50 rounded-xl flex items-center justify-center text-center">
+                        <span class="font-semibold text-indigo-700">Funcional:</span> Usa funciones.
+                    </div>
+                    <div class="p-4 bg-indigo-50 rounded-xl flex items-center justify-center text-center">
+                        <span class="font-semibold text-indigo-700">Texto completo:</span> Búsqueda por palabras.
+                    </div>
+                    <div class="p-4 bg-indigo-50 rounded-xl flex items-center justify-center text-center">
+                        <span class="font-semibold text-indigo-700">Espacial:</span> Ubicación geográfica.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: Practical Activity Section -->
+        <section class="slide" id="slide-7">
+            <div class="card p-8 sm:p-10 text-center w-full max-w-5xl">
+                <h2 class="text-4xl font-bold text-slate-800 mb-6">🧪 Actividad Práctica y Reflexión</h2>
+                <p class="text-lg leading-relaxed text-slate-700 mb-8">
+                    ¡Es hora de aplicar lo aprendido! Piensa en cómo usarías los índices en situaciones reales.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xl">
+                    <div class="p-6 bg-indigo-100 rounded-xl text-indigo-800 font-medium shadow-sm">
+                        ¿Qué índice usarías para buscar clientes por **nombre y ciudad**?
+                    </div>
+                    <div class="p-6 bg-indigo-100 rounded-xl text-indigo-800 font-medium shadow-sm">
+                        ¿Cuál es el mejor para evitar **correos electrónicos repetidos** en una tabla de usuarios?
+                    </div>
+                    <div class="p-6 bg-indigo-100 rounded-xl text-indigo-800 font-medium shadow-sm">
+                        Si solo necesitas optimizar consultas para productos que están en estado **'activo'**, ¿qué tipo de índice aplicarías?
+                    </div>
+                    <div class="p-6 bg-indigo-100 rounded-xl text-indigo-800 font-medium shadow-sm">
+                        ¿Qué consecuencias negativas puede tener el **uso incorrecto o la ausencia de índices**?
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="navigation-buttons">
+        <button id="prevBtn" class="nav-button">Anterior</button>
+        <button id="nextBtn" class="nav-button">Siguiente</button>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                if (i === index) {
+                    slide.classList.add('active');
+                }
+            });
+            updateNavButtons();
+        }
+
+        function updateNavButtons() {
+            prevBtn.disabled = (currentSlide === 0);
+            nextBtn.disabled = (currentSlide === slides.length - 1);
+        }
+
+        prevBtn.addEventListener('click', () => {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        });
+
+        // Initialize presentation
+        document.addEventListener('DOMContentLoaded', () => {
+            showSlide(currentSlide);
+        });
+    </script>
+</body>
+</html>
